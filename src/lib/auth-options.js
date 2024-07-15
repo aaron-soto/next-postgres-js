@@ -59,14 +59,19 @@ export const authOptions = {
       }
       return true;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
         token.email = user.email;
         token.name = user.name;
         token.image = user.image;
-        token.role = user.role; // Add role to the token
+        token.role = user.role;
       }
+
+      if (account) {
+        token.accessToken = account.access_token; // Ensure accessToken is added to the token
+      }
+
       return token;
     },
   },

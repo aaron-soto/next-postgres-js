@@ -1,51 +1,51 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
 import SectionHeading from "@/components/SectionHeading";
 import { formatTupleDate } from "@/lib/utils";
 
-const EVENTS = [
-  {
-    title: "Live Music",
-    description: "Live music by John Doe!",
-    date: "July 1, 2022",
-  },
-  {
-    title: "Live Music",
-    description: "Live music by John Doe!",
-    date: "July 14, 2022",
-  },
-  {
-    title: "Coffee Tasting",
-    description: "Join us for a coffee tasting session!",
-    date: "July 20, 2024",
-  },
-  {
-    title: "Live Music",
-    description: "Live music by John Doe!",
-    date: "July 21, 2022",
-  },
-  {
-    title: "Art Exhibition",
-    description: "Local artists displaying their work.",
-    date: "August 5, 2024",
-  },
-  {
-    title: "Book Club Meeting",
-    description: "Discussing the latest bestsellers.",
-    date: "August 15, 2024",
-  },
-  {
-    title: "Jazz Night",
-    description: "Enjoy a night of smooth jazz.",
-    date: "September 1, 2024",
-  },
-];
-
 const EventsSection = () => {
-  const currentDate = new Date();
+  const [events, setEvents] = useState([]);
 
-  // Filter future events
-  const futureEvents = EVENTS.filter(
-    (event) => new Date(event.date) > currentDate
-  );
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch("/api/events");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("Fetched events:", data); // Log the fetched data
+        setEvents(data);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  const currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0);
+  console.log("Current Date:", currentDate); // Log the current date
+
+  const todayEvents = [];
+  const futureEvents = [];
+  const passedEvents = [];
+
+  events.forEach((event) => {
+    const eventDate = new Date(event.date);
+    eventDate.setHours(0, 0, 0, 0);
+    console.log("Event Date:", eventDate); // Log each event date
+
+    if (eventDate < currentDate) {
+      passedEvents.push(event);
+    } else if (eventDate.getTime() === currentDate.getTime()) {
+      todayEvents.push(event);
+    } else {
+      futureEvents.push(event);
+    }
+  });
 
   return (
     <div className="bg-[#0c0b09] py-16">
@@ -59,17 +59,15 @@ const EventsSection = () => {
         </SectionHeading>
 
         <div className="mt-4">
-          <div className="px-2 py-1 bg-teal-600 md:py-2">Today</div>
-          <p className="p-4 hover:bg-zinc-900">No Events Today</p>
-          <div className="px-2 py-1 bg-gray-600 md:py-2">Future Events</div>
-          <div className="divide-y-2">
-            {futureEvents.map((event, index) => {
+          <div className="px-4 py-1 bg-teal-600 md:py-2">Today</div>
+          {todayEvents.length > 0 ? (
+            todayEvents.map((event, index) => {
               const [day, month] = formatTupleDate(new Date(event.date));
 
               return (
                 <div
                   key={index}
-                  className="flex items-center justify-between px-2 py-2 md:px-4 hover:bg-zinc-900"
+                  className="flex items-center justify-between px-2 py-2 md:px-4 hover:bg-white/[2%]"
                 >
                   <div>
                     <h4 className="font-semibold text-md">{event.title}</h4>
@@ -83,7 +81,38 @@ const EventsSection = () => {
                   </div>
                 </div>
               );
-            })}
+            })
+          ) : (
+            <p className="p-4 hover:bg-white/[2%]">No Events Today</p>
+          )}
+
+          <div className="px-4 py-1 bg-gray-600 md:py-2">Future Events</div>
+          <div className="divide-y-2">
+            {futureEvents.length > 0 ? (
+              futureEvents.map((event, index) => {
+                const [day, month] = formatTupleDate(new Date(event.date));
+
+                return (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between px-2 py-2 md:px-4 hover:bg-white/[2%]"
+                  >
+                    <div>
+                      <h4 className="font-semibold text-md">{event.title}</h4>
+                      <p className="text-sm text-orange-400">
+                        {event.description}
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-center h-full gap-2 text-center md:flex-col md:gap-0 align-center">
+                      <p className="text-xl font-semibold">{day}</p>
+                      <p className="text-lg">{month}</p>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <p className="p-4 hover:bg-white/[2%]">No Future Events</p>
+            )}
           </div>
         </div>
       </div>

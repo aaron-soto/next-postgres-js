@@ -1,3 +1,4 @@
+// AdminSection.js
 "use client";
 
 import React from "react";
@@ -12,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { EventForm } from "@/components/sections/admin/EventForm";
 
-const AdminSection = () => {
+const AdminSection = ({ onEventAdded }) => {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -29,7 +30,7 @@ const AdminSection = () => {
             Add events here that will show on the website.
           </DialogDescription>
         </DialogHeader>
-        <EventForm />
+        <EventForm onEventAdded={onEventAdded} />
       </DialogContent>
     </Dialog>
   );

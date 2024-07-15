@@ -5,11 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
-export function EventForm() {
+export function EventForm({ onEventAdded }) {
   const [formData, setFormData] = React.useState({
-    eventName: "",
-    eventDescription: "",
-    date: new Date().toISOString().slice(0, 16), // Setting initial date value
+    title: "",
+    description: "",
+    date: new Date().toISOString().slice(0, 16),
   });
 
   const handleInputChange = (event) => {
@@ -28,34 +28,67 @@ export function EventForm() {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
+
+    try {
+      // Adjust the date to local timezone before sending
+      const localDate = new Date(formData.date);
+      const adjustedDate = new Date(
+        localDate.getTime() - localDate.getTimezoneOffset() * 60000
+      ).toISOString();
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/events`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...formData, date: adjustedDate }),
+        }
+      );
+
+      if (!response.ok) {
+        console.error("Failed to add event:", response.statusText);
+        throw new Error(`Failed to add event: ${response.statusText}`);
+      }
+
+      const newEvent = await response.json();
+      onEventAdded(newEvent);
+      setFormData({
+        title: "",
+        description: "",
+        date: new Date().toISOString().slice(0, 16),
+      }); // Reset form after successful submission
+    } catch (error) {
+      console.error("Error adding event:", error);
+      // Handle the error accordingly, maybe set an error state or show a message in the UI
+    }
   };
 
   const handleFocus = (event) => {
-    // Ensure the input stays in view on focus
     event.target.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
   return (
     <form onSubmit={handleSubmit} className="max-w-[500px] flex flex-col gap-4">
       <div className="flex flex-col gap-4 py-2">
-        <Label htmlFor="eventName">Event Name</Label>
+        <Label htmlFor="title">Event Name</Label>
         <Input
-          id="eventName"
-          name="eventName"
-          value={formData.eventName}
+          id="title"
+          name="title"
+          value={formData.title}
           onChange={handleInputChange}
           onFocus={handleFocus}
         />
       </div>
       <div className="flex flex-col gap-4 py-2">
-        <Label htmlFor="eventDescription">Event Description</Label>
+        <Label htmlFor="description">Event Description</Label>
         <Input
-          id="eventDescription"
-          name="eventDescription"
-          value={formData.eventDescription}
+          id="description"
+          name="description"
+          value={formData.description}
           onChange={handleInputChange}
           onFocus={handleFocus}
         />

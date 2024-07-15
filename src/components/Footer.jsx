@@ -46,12 +46,19 @@ const Footer = () => {
               william@casestudyphoenix.com
             </a>
           </p>
-          <div className="flex justify-center w-full gap-2 mt-4 md:justify-start">
+          <div className="flex justify-center w-full gap-2 mt-8 md:justify-start">
             <SocialLink
               name="instagram"
               href="https://www.instagram.com/casestudycoffeelounge/"
             />
-            <SocialLink name="facebook" href="https://casestudyphoenix.com/#" />
+            <SocialLink
+              name="facebook"
+              href="https://www.facebook.com/profile.php?id=100087501033604"
+            />
+            <SocialLink
+              name="youtube"
+              href="https://www.youtube.com/@WilliamDouglasCo"
+            />
           </div>
         </div>
         <div className="w-full px-1 py-6 border-t md:py-0 md:border-none md:w-auto">
