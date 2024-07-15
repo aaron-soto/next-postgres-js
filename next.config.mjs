@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['casestudyphoenix.com', '360mediaventures.com'],
+    domains: ["casestudyphoenix.com", "lh3.googleusercontent.com"],
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
