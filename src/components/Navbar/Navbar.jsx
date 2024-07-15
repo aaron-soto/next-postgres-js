@@ -8,8 +8,9 @@ import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { motion } from "framer-motion";
-import GoogleLoginButton from "../GoogleLoginButton";
 import { useSession } from "next-auth/react";
+import { buttonVariants } from "@/components/ui/button";
+import Cart from "./Cart";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -83,6 +84,7 @@ const Navbar = () => {
               <SheetContent
                 side="left"
                 className="p-8 min-w-[400px] max-w-full"
+                autoFocus={false} // Disable auto focus
               >
                 <nav className="flex flex-col justify-between h-full ">
                   <div className="flex flex-col mt-16 space-y-4">
@@ -127,14 +129,18 @@ const Navbar = () => {
                     </motion.div>
                   </div>
                   <div className="flex flex-col w-full gap-4">
-                    <Button
-                      className="border-orange-400 "
-                      size="lg"
-                      variant="outline"
+                    <Cart />
+                    <Link
+                      href="https://www.clover.com/online-ordering/william-douglas-co-phoenix"
+                      className={buttonVariants({
+                        variant: "outline",
+                        size: "lg",
+                        className: "border-orange-400",
+                      })}
                     >
                       Order Online
-                    </Button>
-                    <GoogleLoginButton />
+                    </Link>
+                    {/* <GoogleLoginButton /> */}
                   </div>
                 </nav>
               </SheetContent>
@@ -151,13 +157,21 @@ const Navbar = () => {
               Contact
             </Link>
             {!session?.user ? (
-              <Button className="ml-4 border-orange-400" variant="outline">
+              <Link
+                href="https://www.clover.com/online-ordering/william-douglas-co-phoenix"
+                className={buttonVariants({
+                  variant: "outline",
+                  className: "ml-4 border-orange-400",
+                })}
+              >
                 Order Online
-              </Button>
+              </Link>
             ) : (
               ""
             )}
-            <GoogleLoginButton />
+
+            <Cart />
+            {/* <GoogleLoginButton /> */}
           </div>
         </div>
       </div>

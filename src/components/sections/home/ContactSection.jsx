@@ -52,10 +52,10 @@ const ContactItem = ({ icon: Icon, title, value }) => {
           </span>
         </div>
         {isOpen && (
-          <div>
+          <div className="w-full">
             {Object.entries(value).map(([day, hours], index) =>
               day !== currentDay ? (
-                <div key={index} className="grid grid-cols-2 gap-4">
+                <div key={index} className="grid w-full grid-cols-2 gap-4">
                   <span className="col-span-1">{day}:</span>
                   <span className="col-span-1">{hours}</span>
                 </div>

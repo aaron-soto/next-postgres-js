@@ -1,7 +1,8 @@
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Playfair_Display } from "next/font/google";
 import Image from "next/image";
+import Link from "next/link";
 
 const playfairDisplay = Playfair_Display({ subsets: ["latin"] });
 
@@ -32,12 +33,16 @@ const HeroSection = () => {
           Phoenix&apos;s new favorite coffee lounge!
         </p>
         <div className="flex gap-2">
-          <Button
-            variant="outline"
-            className="px-8 py-2 mt-4 bg-orange-400 border-orange-400 hover:bg-orange-300 backdrop-blur-sm"
+          <Link
+            href="https://www.clover.com/online-ordering/william-douglas-co-phoenix"
+            className={buttonVariants({
+              variant: "outline",
+              className:
+                "px-8 py-2 mt-4 bg-orange-400 border-orange-400 hover:bg-orange-300 backdrop-blur-sm",
+            })}
           >
             Place an order
-          </Button>
+          </Link>
           <Button
             variant="outline"
             className="px-8 py-2 mt-4 border-orange-400 hover:bg-orange-400 bg-black/40 backdrop-blur-md"
