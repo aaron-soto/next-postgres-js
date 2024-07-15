@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Playfair_Display } from "next/font/google";
-import Image from "next/image";
 
 const playfairDisplay = Playfair_Display({ subsets: ["latin"] });
 
@@ -11,7 +10,9 @@ const HeroSection = () => {
       <div
         className="absolute inset-0 w-full h-full bg-fixed bg-top bg-cover"
         style={{
-          backgroundImage: "url('images/hero-front.jpg')",
+          backgroundImage: "url('/images/hero-front.jpg')", // Ensure the path is correct
+          width: "100%",
+          height: "100%",
         }}
       />
       <div className="absolute inset-0 bg-black/40" />
