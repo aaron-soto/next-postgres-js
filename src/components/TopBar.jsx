@@ -26,6 +26,12 @@ const TopBar = () => {
         <div className="flex items-center py-1 text-right">
           {session ? (
             <>
+              {session.user.role === "ADMIN" ||
+                (session.user.role === "DEV" && (
+                  <Link href="/admin" className="px-2 hover:text-orange-400">
+                    Admin
+                  </Link>
+                ))}
               <Link href="/profile" className="px-2 hover:text-orange-400">
                 Profile
               </Link>
