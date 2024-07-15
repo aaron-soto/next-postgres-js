@@ -10,7 +10,7 @@ const HeroSection = () => {
       <div
         className="absolute inset-0 w-full h-full bg-fixed bg-top bg-cover"
         style={{
-          backgroundImage: "url('/images/hero-front.jpg')", // Ensure the path is correct
+          backgroundImage: "url('/images/hero-front.png')",
           width: "100%",
           height: "100%",
         }}
