@@ -1,20 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Playfair_Display } from "next/font/google";
+import Image from "next/image";
 
 const playfairDisplay = Playfair_Display({ subsets: ["latin"] });
 
 const HeroSection = () => {
   return (
     <div className="relative h-[65vh] overflow-hidden">
-      <div
-        className="absolute inset-0 w-full h-full bg-fixed bg-top bg-cover"
-        style={{
-          backgroundImage: "url('/images/hero-front.png')",
-          width: "100%",
-          height: "100%",
-        }}
-      />
+      <div className="fixed inset-0 w-full h-full -z-10">
+        <Image
+          src="/images/hero-front.png"
+          alt="Hero background"
+          layout="fill"
+          objectFit="cover"
+          quality={100}
+          className="w-full h-full"
+        />
+      </div>
       <div className="absolute inset-0 bg-black/40" />
       <div className="container relative z-10 flex flex-col items-baseline justify-center h-full">
         <h1 className="text-5xl font-[400]">

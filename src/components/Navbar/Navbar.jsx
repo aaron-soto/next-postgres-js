@@ -67,7 +67,9 @@ const Navbar = () => {
         )}
       >
         <div className="container flex items-center justify-between">
-          <span className="text-xl font-bold">Case Study Phoenix</span>
+          <Link href="/" className="text-xl font-bold">
+            Case Study Phoenix
+          </Link>
           <div className="flex md:hidden">
             <Sheet>
               <SheetTrigger asChild>
