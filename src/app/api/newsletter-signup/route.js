@@ -6,6 +6,13 @@ const prisma = new PrismaClient();
 
 export async function POST(request) {
   const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+    });
+  }
+
   const { email, honeypot } = await request.json();
 
   if (honeypot) {
@@ -38,5 +45,7 @@ export async function POST(request) {
     return new Response(JSON.stringify({ error: "Something went wrong" }), {
       status: 500,
     });
+  } finally {
+    await prisma.$disconnect();
   }
 }
