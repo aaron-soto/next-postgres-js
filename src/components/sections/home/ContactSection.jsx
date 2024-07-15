@@ -15,6 +15,7 @@ import {
 import Image from "next/image";
 import { formatPhoneNumber } from "../../../lib/utils";
 import { useEffect, useState } from "react";
+import Map from "@/components/map/Map";
 
 const ContactItem = ({ icon: Icon, title, value }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -138,16 +139,7 @@ const ContactSection = () => {
           <SectionHeading title="Contact" description="Get in touch with us" />
         </div>
         <div className="my-8 w-full md:h-[300px] overflow-hidden">
-          {isClient && (
-            <Image
-              src="https://360mediaventures.com/dev/wp-content/uploads/2013/03/map-placeholder.jpg"
-              className="w-full"
-              height={200}
-              width={600}
-              style={{ objectFit: "cover" }}
-              alt="Map Placeholder"
-            />
-          )}
+          {isClient && <Map />}
         </div>
         <div className="container">
           <div className="grid grid-cols-2 md:grid-cols-3">
