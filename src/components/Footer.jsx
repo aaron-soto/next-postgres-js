@@ -1,5 +1,5 @@
 import { Button } from "./ui/button";
-import Icon from "@/components/icon";
+import Icon from "@/components/Icon";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { formatPhoneNumber } from "../lib/utils";
