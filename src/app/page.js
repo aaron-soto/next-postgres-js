@@ -6,6 +6,7 @@ import EventsSection from "@/components/sections/home/EventsSection";
 import GallerySection from "@/components/sections/home/GallerySection";
 import HeroSection from "@/components/sections/home/HeroSection";
 import TestimonialsSection from "@/components/sections/home/TestimonialsSection";
+import NewsletterSignup from "@/components/NewsletterSignup";
 
 export default function Home() {
   return (
@@ -16,9 +17,9 @@ export default function Home() {
       <AboutSection />
       <TestimonialsSection />
       <GallerySection />
+      <NewsletterSignup />
       <ContactSection />
       <Footer />
-      {/* <NewsletterSignup /> */}
     </>
   );
 }

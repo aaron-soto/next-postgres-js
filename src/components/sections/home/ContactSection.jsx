@@ -1,9 +1,12 @@
 "use client";
 
+import Map from "@/components/map/Map";
 import SectionHeading from "@/components/SectionHeading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
+import { formatPhoneNumber } from "@/lib/utils";
 import {
   ChevronDown,
   ChevronUp,
@@ -12,10 +15,7 @@ import {
   Mail,
   Phone,
 } from "lucide-react";
-import Image from "next/image";
-import { formatPhoneNumber } from "../../../lib/utils";
 import { useEffect, useState } from "react";
-import Map from "@/components/map/Map";
 
 const ContactItem = ({ icon: Icon, title, value }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,33 +39,31 @@ const ContactItem = ({ icon: Icon, title, value }) => {
     setIsOpen(!isOpen);
   };
 
-  const formatHours = (value) => {
-    return (
-      <div>
-        <div className="flex gap-4 cursor-pointer" onClick={toggleDropdown}>
-          <span className="col-span-1">{currentDay}:</span>
-          <span className="flex items-center justify-between col-span-2">
-            {value[currentDay]}{" "}
-            <span className="ml-2">
-              {isOpen ? <ChevronUp /> : <ChevronDown />}
-            </span>
+  const formatHours = (value) => (
+    <div>
+      <div className="flex gap-4 cursor-pointer" onClick={toggleDropdown}>
+        <span className="col-span-1">{currentDay}:</span>
+        <span className="flex items-center justify-between col-span-2">
+          {value[currentDay]}
+          <span className="ml-2">
+            {isOpen ? <ChevronUp /> : <ChevronDown />}
           </span>
-        </div>
-        {isOpen && (
-          <div className="w-full">
-            {Object.entries(value).map(([day, hours], index) =>
-              day !== currentDay ? (
-                <div key={index} className="grid w-full grid-cols-2 gap-4">
-                  <span className="col-span-1">{day}:</span>
-                  <span className="col-span-1">{hours}</span>
-                </div>
-              ) : null
-            )}
-          </div>
-        )}
+        </span>
       </div>
-    );
-  };
+      {isOpen && (
+        <div className="w-full">
+          {Object.entries(value).map(([day, hours], index) =>
+            day !== currentDay ? (
+              <div key={index} className="grid w-full grid-cols-2 gap-4">
+                <span className="col-span-1">{day}:</span>
+                <span className="col-span-1">{hours}</span>
+              </div>
+            ) : null
+          )}
+        </div>
+      )}
+    </div>
+  );
 
   return (
     <div className="flex gap-4">
@@ -127,10 +125,60 @@ const CONTACT_ITEMS = [
 
 const ContactSection = () => {
   const [isClient, setIsClient] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const { toast } = useToast();
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/emails/contact`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+      if (response.ok) {
+        toast({
+          title: "Success",
+          description: "Message sent successfully.",
+        });
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "Error sending message.",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Error: " + error.message,
+      });
+    }
+  };
 
   return (
     <section className="bg-[#0c0b09]">
@@ -150,30 +198,47 @@ const ContactSection = () => {
             </div>
             <div className="h-full col-span-2">
               <form
-                action="#"
-                method="POST"
+                onSubmit={handleSubmit}
                 className="flex flex-col justify-center h-full gap-6 my-8 md:my-0"
               >
                 <div className="flex flex-col gap-4 md:flex-row">
                   <Input
                     type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
                     className="bg-transparent"
                     placeholder="Your Name"
                   />
                   <Input
                     type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
                     className="bg-transparent"
                     placeholder="Your Email"
                   />
                 </div>
                 <Input
                   type="text"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
                   className="bg-transparent"
                   placeholder="Subject"
                 />
-                <Textarea className="bg-transparent" placeholder="Message" />
+                <Textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  className="bg-transparent"
+                  placeholder="Message"
+                />
                 <div className="flex justify-center col-span-2 mb-8 md:mb-0">
-                  <Button className="bg-orange-400 text-orange-950 hover:bg-orange-500 hover:text-orange-900">
+                  <Button
+                    type="submit"
+                    className="bg-orange-400 text-orange-950 hover:bg-orange-500 hover:text-orange-900"
+                  >
                     Send Message
                   </Button>
                 </div>

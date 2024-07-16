@@ -13,9 +13,9 @@ const HeroSection = () => {
         <Image
           src="/images/hero-front.png"
           alt="Hero background"
-          layout="fill"
-          objectFit="cover"
+          fill
           quality={100}
+          style={{ objectFit: "cover" }}
           className="w-full h-full"
         />
       </div>

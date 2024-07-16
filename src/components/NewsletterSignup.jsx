@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Input } from "@/components/ui/Input";
-import { Button } from "./ui/button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
 const NewsletterSignup = () => {
@@ -17,7 +17,7 @@ const NewsletterSignup = () => {
     setMessage("");
     setLoading(true);
 
-    const response = await fetch("/api/newsletter-signup", {
+    const response = await fetch("/api/emails", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,41 +44,43 @@ const NewsletterSignup = () => {
   };
 
   return (
-    <div className="container">
-      <div className="max-w-[550px] mx-auto">
-        <form
-          onSubmit={handleSubmit}
-          className="p-8 rounded-[10px] flex flex-col bg-secondary my-8"
-        >
-          <h1 className="mb-1 text-3xl font-bold text-center">
-            Subscribe to our newsletter
-          </h1>
-          <p className="text-center text-muted-foreground">
-            We will not span you. we promise!
-          </p>
-          <div className="flex w-full mt-6 space-x-2">
-            <Input
-              type="email"
-              id="email"
-              className="w-full"
-              placeholder="Please enter your email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+    <div className="py-16 bg-black">
+      <div className="container">
+        <div className="max-w-[550px] mx-auto">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col p-8 rounded bg-secondary"
+          >
+            <h1 className="mb-1 text-3xl font-bold text-center text-orange-400">
+              Subscribe to our newsletter
+            </h1>
+            <p className="text-center text-muted-foreground">
+              We will not span you. we promise!
+            </p>
+            <div className="flex w-full mt-6 space-x-2">
+              <Input
+                type="email"
+                id="email"
+                className="w-full"
+                placeholder="Please enter your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <Button type="submit" disabled={loading}>
+                {loading ? "Submitting..." : "Subscribe"}
+              </Button>
+            </div>
+            <input
+              type="text"
+              name="honeypot"
+              className="hidden"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
             />
-            <Button type="submit" disabled={loading}>
-              {loading ? "Submitting..." : "Subscribe"}
-            </Button>
-          </div>
-          <input
-            type="text"
-            name="honeypot"
-            className="hidden"
-            value={honeypot}
-            onChange={(e) => setHoneypot(e.target.value)}
-          />
-          {message && <p>{message}</p>}
-        </form>
+            {message && <p>{message}</p>}
+          </form>
+        </div>
       </div>
     </div>
   );
