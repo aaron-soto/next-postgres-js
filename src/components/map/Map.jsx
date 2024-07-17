@@ -6,10 +6,9 @@ import { mapOptions } from "./config";
 
 function Map() {
   const mapRef = useRef(null);
-  const coordinates = { lat: 33.50754, lng: -112.0479 }; // Coordinates for 4802 N 16th St Phoenix, AZ
+  const coordinates = { lat: 33.50754, lng: -112.0479 };
 
   useEffect(() => {
-    console.log("Initializing Google Maps loader");
     const loader = new Loader({
       apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
       version: "weekly",
@@ -23,7 +22,6 @@ function Map() {
           return;
         }
 
-        console.log("Google Maps API loaded successfully");
         const map = new window.google.maps.Map(
           mapRef.current,
           mapOptions(coordinates)

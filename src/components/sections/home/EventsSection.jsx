@@ -15,7 +15,6 @@ const EventsSection = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log("Fetched events:", data); // Log the fetched data
         setEvents(data);
       } catch (error) {
         console.error("Error fetching events:", error);
@@ -27,7 +26,6 @@ const EventsSection = () => {
 
   const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0);
-  console.log("Current Date:", currentDate); // Log the current date
 
   const todayEvents = [];
   const futureEvents = [];
@@ -36,7 +34,6 @@ const EventsSection = () => {
   events.forEach((event) => {
     const eventDate = new Date(event.date);
     eventDate.setHours(0, 0, 0, 0);
-    console.log("Event Date:", eventDate); // Log each event date
 
     if (eventDate < currentDate) {
       passedEvents.push(event);

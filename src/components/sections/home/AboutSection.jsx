@@ -62,7 +62,7 @@ const AboutSection = () => {
             alt="Will with customers"
             width={600}
             height={400}
-            className="order-1 object-cover h-full rounded-md md:order-2"
+            className="order-1 object-cover h-full transition-transform duration-200 rounded-md md:order-2 md:hover:scale-105"
           ></CsImage>
         </div>
       </div>
